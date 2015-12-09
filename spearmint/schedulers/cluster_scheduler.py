@@ -215,13 +215,14 @@ class AbstractClusterScheduler(object):
         if "environment-file" in self.options:
             run_command += 'source %s\n' % self.options["environment-file"]
         run_command += 'cd %s\n' % base_path
-        run_command += 'python launcher.py --database-address=%s --experiment-name=%s --job-id=%s %s' % \
-               (database_address, experiment_name, job_id, experiment_dir)
 
         # Since "localhost" might mean something different on the machine
         # we are submitting to, set it to the actual name of the parent machine
         if database_address == "localhost":
             database_address = socket.gethostname()
+
+        run_command += 'python launcher.py --database-address=%s --experiment-name=%s --job-id=%s %s' % \
+               (database_address, experiment_name, job_id, experiment_dir)
 
         output_directory = os.path.join(experiment_dir, 'output')
         if not os.path.isdir(output_directory):
